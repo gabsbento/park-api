@@ -1,6 +1,7 @@
 package com.gabriel.demo_park_api.service;
 
 import com.gabriel.demo_park_api.entity.Usuario;
+import com.gabriel.demo_park_api.exception.EntityNotFoundException;
 import com.gabriel.demo_park_api.exception.UsernameUniqueViolationException;
 import com.gabriel.demo_park_api.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class UsuarioService {
     @Transactional(readOnly = true)
     public Usuario buscarPorId(Long id){
         return usuarioRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Usuario não encontrado")
+                () -> new EntityNotFoundException(String.format("Usuario id=%s não encontrado", id))
         );
     }
     @Transactional

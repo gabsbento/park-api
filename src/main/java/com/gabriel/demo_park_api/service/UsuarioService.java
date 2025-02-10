@@ -2,6 +2,7 @@ package com.gabriel.demo_park_api.service;
 
 import com.gabriel.demo_park_api.entity.Usuario;
 import com.gabriel.demo_park_api.exception.EntityNotFoundException;
+import com.gabriel.demo_park_api.exception.PasswordInvalidException;
 import com.gabriel.demo_park_api.exception.UsernameUniqueViolationException;
 import com.gabriel.demo_park_api.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +35,13 @@ public class UsuarioService {
     @Transactional
     public Usuario editarSenha(Long id, String senhaAtual, String novaSenha, String confirmaSenha) {
         if(!novaSenha.equals(confirmaSenha)){
-            throw new RuntimeException("Nova senha não confere com confirmação de senha");
+            System.out.println("Senha não confere");
+            throw new PasswordInvalidException("Nova senha não confere com confirmação de senha");
         }
         Usuario usuario = buscarPorId(id);
         if(!usuario.getPassword().equals(senhaAtual)){
-            throw new RuntimeException("Sua senha não confere");
+            System.out.println("Senha atual errada");
+            throw new PasswordInvalidException("Sua senha não confere");
         }
         usuario.setPassword(novaSenha);
         return usuario;
